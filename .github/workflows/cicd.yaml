@@ -14,21 +14,22 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, bcmath, zip
           coverage: none
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: "20"
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
         run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          composer update
+          composer install --no-interaction --prefer-dist --optimize-autoloader
           npm install
           npm run build
 
@@ -59,12 +60,15 @@ jobs:
               git pull origin main
             fi
 
-            # Install dependencies
+            # Update dan Install dependencies
+            composer update
             composer install --no-interaction --prefer-dist --optimize-autoloader
             npm install
             npm run build
 
             # Setup Laravel
+            cp .env.example .env
+            php artisan key:generate
             php artisan storage:link
             php artisan config:cache
             php artisan route:cache
@@ -76,6 +80,6 @@ jobs:
             chmod -R 777 storage bootstrap/cache
             chown -R www-data:www-data .
 
-            # Restart services jika diperlukan
+            # Restart services
             sudo systemctl restart php8.1-fpm
             sudo systemctl restart nginx
