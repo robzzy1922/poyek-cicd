@@ -10,19 +10,20 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     services:
-      postgres:
-        image: postgres:latest
+      mysql:
+        image: mysql:8.3
         env:
-          POSTGRES_USER: laravel
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: laravel_test
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: signix_database
+          MYSQL_USER: root
+          MYSQL_PASSWORD:
         ports:
-          - 5432:5432
+          - 3306:3306
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
       - name: Checkout code
