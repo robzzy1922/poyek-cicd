@@ -31,7 +31,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: "8.2"
           extensions: mbstring, ctype, fileinfo, openssl, PDO, tokenizer, xml, pgsql, pdo_pgsql
           coverage: none
 
@@ -100,15 +100,15 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "mkdir -p ~/laravel-temp-deploy"
 
           # Upload files ke server
-          scp -o StrictHostKeyChecking=no -r ./deploy/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/laravel-temp-deploy/
+          scp -o StrictHostKeyChecking=no -r ./deploy/* ${{ secrets.USERNAME}}@${{ secrets.HOST }}:~/laravel-temp-deploy/
 
-          # Jalankan deployment script di server
+            # Jalankan deployment script di server
           ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << EOF
             cd ~/laravel-temp-deploy
 
-          # Backup existing deployment (optional)# tar -czf /backup/laravel-backup-$(date +"%Y%m%d%H%M%S").tar.gz /var/www/laravel-app
+            # Backup existing deployment (optional)# tar -czf /backup/laravel-backup-$(date +"%Y%m%d%H%M%S").tar.gz /var/www/laravel-app
 
-          # Copy files to production directory
+            # Copy files to production directory
             sudo rsync -avz --delete \
               --exclude='.env' \
               --exclude='storage' \
@@ -116,14 +116,14 @@ jobs:
               --exclude='.github' \
               ~/laravel-temp-deploy/ /var/www/laravel-app/
 
-          # Copy .env jika diperlukan (biasanya tidak dilakukan di CI/CD)# sudo cp ~/laravel-temp-deploy/.env /var/www/laravel-app/.env
+            # Copy .env jika diperlukan (biasanya tidak dilakukan di CI/CD)# sudo cp ~/laravel-temp-deploy/.env /var/www/laravel-app/.env
 
-          # Set permissions
+            # Set permissions
             sudo chown -R www-data:www-data /var/www/laravel-app
             sudo chmod -R 755 /var/www/laravel-app/storage
             sudo chmod -R 755 /var/www/laravel-app/bootstrap/cache
 
-          # Run deployment commands
+            # Run deployment commands
             cd /var/www/laravel-app
             sudo -u www-data composer install --optimize-autoloader --no-dev
             sudo -u www-data php artisan config:cache
@@ -133,6 +133,6 @@ jobs:
 
           # Restart services if needed# sudo systemctl restart php8.2-fpm# sudo systemctl restart nginx
 
-          # Cleanup
+            # Cleanup
             rm -rf ~/laravel-temp-deploy
           EOF
