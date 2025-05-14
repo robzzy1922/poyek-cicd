@@ -53,7 +53,7 @@ jobs:
 
             # Clone atau pull repository
             if [ ! -d ".git" ]; then
-              git clone https://github.com/${{ github.repository }}.git
+              git clone https://github.com/${{ github.repository }}.git .
             else
               git pull origin main
             fi
@@ -76,7 +76,9 @@ jobs:
             # Set permissions
             chmod -R 775 .
             chmod -R 777 storage bootstrap/cache
-            chown -R www-data:www-data .
+            chown -R www-data:www-data .\
+            chmod -R 755 /var/www/html/rpl2b-kelompok1
+            chown -R www-data:www-data /var/www/html/rpl2b-kelompok1
 
             # Restart services
             sudo systemctl restart php8.1-fpm
