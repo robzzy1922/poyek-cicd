@@ -52,11 +52,9 @@ jobs:
             cd /var/www/html/rpl2b-kelompok1
 
             # Clone atau pull repository
-            if [ ! -d "signix_web" ]; then
-              git clone https://github.com/${{ github.repository }}.git signix_web
-              cd signix_web
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/${{ github.repository }}.git
             else
-              cd signix_web
               git pull origin main
             fi
 
