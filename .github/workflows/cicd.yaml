@@ -48,8 +48,15 @@ jobs:
           port: 64000
           script: |
             # Buat direktori jika belum ada
-            mkdir -p /var/www/html/rpl2b-kelompok1
-            cd /var/www/html/rpl2b-kelompok1
+            if [ ! -d "/var/www/html/cicd" ]; then
+              mkdir -p /var/www/html/cicd
+            fi
+
+            if [ ! -d "/var/www/html/cicd/2305050" ]; then
+              mkdir -p /var/www/html/cicd/2305050
+            fi
+
+            cd /var/www/html/cicd/2305050
 
             # Clone atau pull repository
             if [ ! -d ".git" ]; then
@@ -77,8 +84,7 @@ jobs:
             chmod -R 775 .
             chmod -R 777 storage bootstrap/cache
             chown -R www-data:www-data .\
-            chmod -R 755 /var/www/html/rpl2b-kelompok1
-            chown -R www-data:www-data /var/www/html/rpl2b-kelompok1
+            chmod -R 755 /var/www/html/cicd
 
             # Restart services
             sudo systemctl restart php8.1-fpm
