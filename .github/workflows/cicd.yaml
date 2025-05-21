@@ -73,6 +73,17 @@ jobs:
       - name: Run database migrations and seed
         run: php artisan migrate:fresh --seed
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build assets using Vite
+        run: npm run build
+
       - name: Execute tests
         run: php artisan test
 
