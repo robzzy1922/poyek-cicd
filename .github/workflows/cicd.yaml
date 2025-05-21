@@ -148,7 +148,7 @@ jobs:
             sudo chmod -R 755 /var/www/laravel-app/bootstrap/cache
 
             # Run deployment commands
-            cd /var/www/laravel-app
+            cd /var/www/laravel-rpl2b-kelompok-1
             sudo -u www-data composer install --optimize-autoloader --no-dev
             sudo -u www-data php artisan config:cache
             sudo -u www-data php artisan route:cache
