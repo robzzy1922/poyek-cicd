@@ -11,7 +11,7 @@ use Illuminate\Database\Seeder;
 
 use Database\Seeders\OrmawaSeeder;
 use Database\Seeders\AdminSeeder;
-use Database\Seeders\KemahasiswaanSeeder;
+use Database\Seeders\kemahasiswaanSeeder;
 use Database\Seeders\DosenSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminSeeder::class,
-            KemahasiswaanSeeder::class,
+            kemahasiswaanSeeder::class,
             DosenSeeder::class,
             OrmawaSeeder::class,
         ]);
