@@ -44,11 +44,12 @@ jobs:
         run: |
           cp .env.example .env
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
-          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env        # UBAH INI
+          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=laracicd/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=polindra/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=polindra/' .env
+          php artisan config:clear
 
       - name: Generate app key
         run: php artisan key:generate
@@ -56,13 +57,19 @@ jobs:
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..10}; do
-            if mysqladmin ping -h 127.0.0.1 -u polindra -p polindra --silent; then
+            if mysqladmin ping -h mysql -u polindra -ppolindra --silent; then
               echo "MySQL is ready!"
               break
             fi
             echo "Waiting for MySQL... Attempt $i/10"
             sleep 3
           done
+
+      - name: Show current DB connection
+        run: |
+          php -r "echo 'DB_CONNECTION: ' . env('DB_CONNECTION') . PHP_EOL;"
+          php artisan config:clear
+          php artisan config:cache
 
       - name: Run database migrations and seed
         run: php artisan migrate:fresh --seed
