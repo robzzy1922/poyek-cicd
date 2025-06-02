@@ -56,7 +56,7 @@ jobs:
           php artisan config:cache
           php artisan config:clear
 
-      - name: Generate app key
+      - name: Generate app key laravel
         run: php artisan key:generate
 
       - name: Wait for MySQL to be ready
