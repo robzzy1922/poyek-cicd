@@ -41,7 +41,7 @@ jobs:
         run: |
           composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Dump autoload
+      - name: Composer Dump autoload
         run: composer dump-autoload
 
       - name: Configure MySQL
